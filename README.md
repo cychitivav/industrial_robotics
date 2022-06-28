@@ -1,5 +1,5 @@
 # Industrial robotics
-This repository contains the development of the laboratory practice of the robotics class at the Universidad Nacional de Colombia. This practice consists of using the industrial manipulator ABB IRB 140 to traverse a path on a paper and draw the initials of the name of each [team](#contributors) member.
+This repository contains the development of the laboratory practice of the robotics class at the Universidad Nacional de Colombia. This practice consists of using the industrial manipulator ABB IRB 140 to traverse a path on a paper and draw the initials of the name of each [team](#contributors) member (BJC).
 
 #### Materials
 * RobotStudio version 5 or higher
@@ -30,6 +30,34 @@ Based on these dimensions we started to design a tool. Initially it was thought 
 These components allowed us to use more complex geometries as shown in the image above, as the marker is tilted at $45\degree$. CPVC pipe was chosen, as the PVC pipe is a little wider and the markers did not fit properly.
 
 #### Tool creation in RobotStudio
+In order to add the tool to the RobotStudio library, the CAD model was exported to .SAT format, which is correctly read in this software as a single part. For this purpose, an empty station is created and with the help of the _import geometry_ option in the _modeling_ tab, the tool is added to the station.
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/30636259/176235879-7a25f821-b656-4698-b11b-aef3c7ec615c.png" alt="import geometry window" width="450" />
+</p>
+
+Once the part is imported, it must be positioned so that the world coordinate frame coincides with that of the manipulator flange. In addition, a frame is added at the location where the TCP (Tool Center Point) is located. To orient the part, it is sufficient to make a rotation in the $z$ axis, while to place the TCP it was necessary to create the frame at the end of the pen housing and then move it to the tip of the pen.
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/30636259/176238817-671f66dd-b3e8-45dc-a961-e8db909d11c4.png" width="350" />
+    <img src="https://user-images.githubusercontent.com/30636259/176240744-c102b506-0439-462d-bce5-2071958232ba.png" width="300" />
+</p>
+
+With the TCP created, proceed to create the tool, for this, in the *modeling* tab, select the option to *create tool*. After selecting this option a popup window appears where the mass and moments of inertia of the part (provided by the CAD software) are added, then the TCP is added and click on *Done*.
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/30636259/176242468-57e4d3de-41e1-40c0-a3eb-424947348880.png" width="300" />
+    <img src="https://user-images.githubusercontent.com/30636259/176242519-dea6e20e-0193-42d0-8930-bf42d12cb1a9.png" width="300" />
+</p>
+
+In order to use the tool for other applications, it is saved in the personal [library](lib/MarkerPenTool.rslib).
+
+<p align="center">
+    <img src="https://user-images.githubusercontent.com/30636259/176242904-4153eb4b-8676-4146-a8b4-3b5e75c37494.png" width="450" /> <br/>
+    <img src="https://user-images.githubusercontent.com/30636259/176243349-ffa354ad-5ca2-434e-9a73-4d71c6837768.png" width="300" />
+</p>
+
+
 
 #### Calibration
 
