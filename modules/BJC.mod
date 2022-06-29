@@ -1,4 +1,4 @@
-MODULE Module1
+MODULE BJC
     CONST robtarget Home:=[[506.292,0,679.5],[0.5,0,0.866025404,0],[0,-1,0,1],[9E+09,9E+09,9E+09,9E+09,9E+09,9E+09]];
     
 !    Brayan points
@@ -36,7 +36,7 @@ MODULE Module1
     ! Description:
     !   <Insert description here>
     !
-    ! Author: Cristian Chitiva, Brayan Estupiñan
+    ! Author: Cristian Chitiva, Brayan Estupinan
     !
     ! Version: 1.0
     !
