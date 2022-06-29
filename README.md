@@ -60,8 +60,17 @@ In order to use the tool for other applications, it is saved in the personal [li
 
 
 #### Calibration
+For tool calibration we used a method with 4 points to define TCP and 1 elongator point to find "z" axis. The first is to position robot at home, later we install own tool in the robot and last we put the reference tip on the floor inside of workspace robot, The idea is that the tip remains still, so we glue it to the floor.
+Now we can use the flexpendant to control robot joints and  in this way make the TCP reach  the reference tip as we can see it in the following image:
+IMAGEN CALIBRANDO
+Once the reference tip is reached, the information of the current position of the TCP must be saved, then we look for another orientation for  TCP  and we repeat the previous procedure until we have saved the four required points. Finally to define the elongator point we must leave the tool in a vertical position to bring it closer to reference tip,as shown in the following image:
 
+Imagen Z
 
+When the 4 points and Z are defined, tool data is created, also in this moment we can obsvervate the error between the measurements. Last the program calculate tool 
+transformate matriz.
+
+IMAGEN ERROR
 ### Path planning
 
 
