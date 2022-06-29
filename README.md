@@ -60,17 +60,38 @@ In order to use the tool for other applications, it is saved in the personal [li
 
 
 #### Calibration
-For tool calibration we used a method with 4 points to define TCP and 1 elongator point to find "z" axis. The first is to position robot at home, later we install own tool in the robot and last we put the reference tip on the floor inside of workspace robot, The idea is that the tip remains still, so we glue it to the floor.
-Now we can use the flexpendant to control robot joints and  in this way make the TCP reach  the reference tip as we can see it in the following image:
-IMAGEN CALIBRANDO
-Once the reference tip is reached, the information of the current position of the TCP must be saved, then we look for another orientation for  TCP  and we repeat the previous procedure until we have saved the four required points. Finally to define the elongator point we must leave the tool in a vertical position to bring it closer to reference tip,as shown in the following image:
+For tool calibration we used a method with 4 points to define TCP and 1 elongator point to define $z$ axis. The first is to position robot at home, later we assembly own tool in the robot flange and last we put the reference tip on the floor inside of workspace robot, The idea is that the tip remains still, so we glue it to the floor.
 
-Imagen Z
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/30636259/176493668-00edbee5-f5d0-44e6-aa2b-c0c6fb13b46d.png" width="250" /> <br/>
+    Reference Tip
+</div>
 
-When the 4 points and Z are defined, tool data is created, also in this moment we can obsvervate the error between the measurements. Last the program calculate tool 
-transformate matriz.
+Now we can use the flexpendant to control robot joints manually and in this way make the TCP reach the reference tip as we can see it in the following image:
 
-IMAGEN ERROR
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/30636259/176547056-50fe7d83-07be-4afa-9407-bdaa1263cfd4.jpg" width="350" />
+</div>
+
+Once the reference tip is reached, the information of the current position of the TCP must be saved, then we look for another orientation for  TCP  and we repeat the previous procedure until we have saved the four required points. Finally, to define the elongator point we must leave the tool in a vertical position to bring it closer to reference tip,as shown in the following image:
+
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/30636259/176547094-c9d71ed0-92ee-44d3-af6e-3f3721760d2c.jpg" width="350" />
+</div>
+
+When the 4 points and $z$ are defined, tool data is created, also in this moment we can observe the error between the measurements. Finally, with this position the controller compute the tool transformation matriz.
+
+
+
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/30636259/176549014-ceb92387-03b3-4f06-80bc-4530023ff5bc.jpg" width="350" />
+    <img src="https://user-images.githubusercontent.com/30636259/176549184-9096a6a3-650c-4fc3-97ad-7d138425335f.jpg" width="350" />
+</div>
+
+$$
+\text{Mean error} = 0.353\ mm
+$$
+
 ### Path planning
 
 
