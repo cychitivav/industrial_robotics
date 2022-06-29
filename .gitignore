@@ -1,1 +1,6 @@
+# VSCode files
 *.vscode
+
+# RobotStudio backups
+*Backup*
+*TEMP
