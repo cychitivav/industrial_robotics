@@ -81,8 +81,6 @@ Once the reference tip is reached, the information of the current position of th
 
 When the 4 points and $z$ are defined, tool data is created, also in this moment we can observe the error between the measurements. Finally, with this position the controller compute the tool transformation matriz.
 
-
-
 <div align="center">
     <img src="https://user-images.githubusercontent.com/30636259/176549014-ceb92387-03b3-4f06-80bc-4530023ff5bc.jpg" width="350" />
     <img src="https://user-images.githubusercontent.com/30636259/176549184-9096a6a3-650c-4fc3-97ad-7d138425335f.jpg" width="350" />
@@ -92,13 +90,46 @@ $$
 \text{Mean error} = 0.353\ mm
 $$
 
+##### Manual calibration vs. RobotStudio calibration
+Using the CAD model you can locate the TCP in RobotStudio as defined in section [tool in RobotStudio](#tool-creation-in-robotstudio), this way we find:
+
+* Position:
+    * $x=12.254\ mm$
+    * $y=-0.002\ mm$
+    * $z=214.736\ mm$
+* Orientation
+    * $q_1=0.923879533$
+    * $q_2=0$
+    * $q_3=0.382683432$
+    * $q_4=0$
+
+Whereas with manual calibration, we find:
+
+* Position:
+    * $x=7.62994\ mm$
+    * $y=4.36555\ mm$
+    * $z=211.035\ mm$
+* Orientation
+    * $q_1=0.819285$
+    * $q_2=0.523964$
+    * $q_3=-0.19619$
+    * $q_4=-0.125471$
+
 ### Path planning
+In order to write on the paper, the robot has to follow a path which is described by the following waypoints
+
 
 <div align="center">
     <img src="https://user-images.githubusercontent.com/30636259/176568637-34abc6d3-b387-4574-a0e7-6cd6a467ef83.png#gh-dark-mode-only" width="700" />
     <img src="https://user-images.githubusercontent.com/30636259/176568709-5a4846fb-183c-4c45-9e0e-750b4b6ce175.png#gh-light-mode-only" width="700" />
 </div>
 
+These waypoints are called targets in RobotStudio.
+
+#### Targets
+The targets in RobotStudio not only contain the position of the waypoints, they have two other properties that are very important: the **orientation** with which they arrive at that position and the **configuration** of the robot.
+
+The position of each point on the path is as follows:
 <div align="center">
 
 |   Point  | $x(mm)$ | $y(mm)$ | $z(mm)$ |
@@ -125,11 +156,79 @@ $$
 | $P_{18}$ |   $190$ |  $25$   |   $0$   |
 | $P_{19}$ |   $210$ |  $50$   |   $0$   |
 
-
 </div>
+
+> __Note__: The points containing the subindex $u$ (e.g., $P_{7u}$), are positions that are used to lift the tool so as not to scratch the paper while changing letters.
+
+The orientation for each point is defined normal to the surface, i.e. in the $-z$ direction of the [workobject](#workobjects). While the configuration is defined as $(0,-1,0,1)$, which corresponds to the right shoulder, elbow up and wrist down configuration.
+The syntax for defining a tool in RobotStudio is as follows:
+
+```RAPID
+tooldata name:=[robhold,tframe[[x,y,z],[q1,q2,q3,q4]],tload[mass,cog[x,y,z],aom[q1,q2,q3,q4],Ix,Iy,Iz]];
+```
+
+
+#### Paths
+Three basic motion instructions are used to define a path in RobotStudio:
+
+1. **MoveJ**: Move the robot to a target position interpolating the joint configuration in joint space.
+    ```RAPID
+    MoveJ ToPoint,Speed,Zone,Tool;
+    ```
+1. **MoveL**: Move the robot to a target position interpolating the joint configuration in Cartesian space.
+    ```RAPID
+    MoveL ToPoint,Speed,Zone,Tool;
+    ```
+1. **MoveC**: Move the robot to a target position on a circular path passing through an intermediate point.
+    ```RAPID
+    MoveC CircPoint,ToPoint,Speed,Zone,Tool;
+    ```
+
+In addition, this instructions can receive a `\wobj` parameter, which is a workobject defined in RobotStudio, in which the trajectory will be carried out.
+
+in this case, the trajectory is performed in 3 stages (one for each letter) plus an approach stage:
+
+* Approximation: The robot moves to *home*.
+    1. `MoveJ Home,v1000,z100,tool0;`
+* Brayan: The robot moves along to *B letter*:
+    1. `MoveJ P5,v1000,z0,toolBJC\WObj:=whiteBoard;`
+    1. `MoveL P2,v100,z0,toolBJC\WObj:=whiteBoard;`
+    1. `MoveL P1,v100,z0,toolBJC\WObj:=whiteBoard;`
+    1. `MoveC P6,P5,v100,z0,toolBJC\WObj:=whiteBoard;`
+    1. `MoveC P7,P4,v100,z0,toolBJC\WObj:=whiteBoard;`
+    1. `MoveL P3,v100,z0,toolBJC\WObj:=whiteBoard;`
+    1. `MoveL P2,v100,z0,toolBJC\WObj:=whiteBoard;`
+* Julian: The robot moves along to *J letter*:
+    1. `MoveJ P8,v1000,z0,toolBJC\WObj:=whiteBoard;`
+    1. `MoveL P9,v100,z0,toolBJC\WObj:=whiteBoard;`
+    1. `MoveL P10,v100,z0,toolBJC\WObj:=whiteBoard;`
+    1. `MoveC P11,P12,v100,z0,toolBJC\WObj:=whiteBoard;`
+* Cristian: The robot moves along to *C letter*:
+    1. `MoveJ P13,v1000,z0,toolBJC\WObj:=whiteBoard;`
+    1. `MoveC P14,P15,v100,z0,toolBJC\WObj:=whiteBoard;`
+    1. `MoveC P16,P17,v100,z0,toolBJC\WObj:=whiteBoard;`
+    1. `MoveC P18,P19,v100,z0,toolBJC\WObj:=whiteBoard;`
+
+> __Note__: These instructions are made with respect to the `whiteBoard` workbject and with the `toolBJC` tool.
+
+#### Workobjects
+If you want to repeat the path in another position, you can redefine the waypoints in this other position. When you have only a few points, this task can be relatively easy, but when you have several points, the task becomes more time-consuming. For this reason, in RobotStudio we create **workobjects**, reference frames that can be modified and when the workobject is moved, all the paths defined with respect to it, the controller performs the calculations to find the inverse kinematics in these new points.
+The syntax for defining a workobject in RobotStudio is as follows:
+
+```RAPID
+wobjdata name:=[robhold,ufprog,ufmec,uframe[[x,y,z],[q1,q2,q3,q4]],oframe[[x,y,z],[q1,q2,q3,q4]]];
+```
+
 
 
 ### Robotics toolbox
+
+## Video
+Using the simulator, we found that the tool correctly traversed the path, but in practice not everything is perfect, so for the inclined plane we adjusted the surface to match as closely as possible (in addition to the spring mechanism inside the marker support to counteract surface irregularities). The development in the lab can be seen in the following video:
+
+[YouTube video]()
+
+
 
 ## Contributors
 * [Brayan Estupiñan](https://github.com/Brayanleo)
