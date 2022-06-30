@@ -116,5 +116,5 @@ if __name__ == "__main__":
                     irb140.MoveC(wobj*P17, wobj*P18, wobj*P19, n),
                     irb140.MoveJ(wobj*P19, Home, n)))
 
-    irb140.plot(qs, dt=0.1, jointaxes=True,movie='BJC.gif')
+    irb140.plot(qs, dt=1, jointaxes=True,movie='BJC.gif')
     input()

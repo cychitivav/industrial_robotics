@@ -222,13 +222,18 @@ wobjdata name:=[robhold,ufprog,ufmec,uframe[[x,y,z],[q1,q2,q3,q4]],oframe[[x,y,z
 
 
 ### Robotics toolbox
+With the coordinates defined, the peter corke toolbox can be used to perform another visualization, although it has a drawback, the inverse kinematics for robots with the Denavit-Hartenberg convention is not analytically defined. This causes the simulation to jump between configurations because the configuration cannot be defined. The results in the toolbox are:
+
+<div align="center">
+    <img src="https://user-images.githubusercontent.com/30636259/176595800-9e88729e-5e89-442c-9e49-6e50d42bc9bb.gif" width="500" />
+</div>
 
 ## Video
 Using the simulator, we found that the tool correctly traversed the path, but in practice not everything is perfect, so for the inclined plane we adjusted the surface to match as closely as possible (in addition to the spring mechanism inside the marker support to counteract surface irregularities). The development in the lab can be seen in the following video:
 
-[YouTube video]()
+[YouTube video](https://www.youtube.com/watch?v=hjDFRqMowck)
 
-
+https://user-images.githubusercontent.com/30636259/176596901-98d446b4-d50c-4e8e-b87d-f8236b6b4cce.mp4
 
 ## Contributors
 * [Brayan Estupiñan](https://github.com/Brayanleo)
@@ -237,6 +242,3 @@ Using the simulator, we found that the tool correctly traversed the path, but in
 ## Acknowledgements
 * Professor: [Felipe Gonzalez](https://github.com/felipeg17)
 * Monitor: [Manuel Lugo](https://github.com/mlugom)
-
-
-## References
